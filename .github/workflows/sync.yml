@@ -1,0 +1,23 @@
+# Keeps main up to date with CubeCoders/AMPTemplates. It merges instead of rebasing so the ADS clone can keep fast-forwarding with git pull.
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --no-rebase --no-edit https://github.com/CubeCoders/AMPTemplates.git main
+          git push
